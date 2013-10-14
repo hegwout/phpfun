@@ -48,17 +48,23 @@ class phpfun {
 	 * @param unknown_type $data        	
 	 * @return string
 	 */
-	static function htmlspecialchars_array($data, $ex = ENT_QUOTES) {
+	static function array_htmlspecialchars($data, $ex = ENT_QUOTES) {
 		if (is_array ( $data )) {
 			foreach ( $data as $k => $v ) {
 				if ($k == 'url' || strpos ( $k, '_url' ) !== false || strpos ( $k, '_link' ) !== false)
 					continue;
-				$data [$k] = htmlspecialchars_array ( $v, $ex );
+				$data [$k] = self::array_htmlspecialchars ( $v, $ex );
 			}
 		} else
 			$data = htmlspecialchars ( $data, $ex );
 		return $data;
 	}
+	/**
+	 * 判断是否为数值ID组成的字符串
+	 * @param unknown $ids
+	 * @param string $sp
+	 * @return boolean
+	 */
 	static function is_id_list($ids, $sp = null) {
 		if (empty ( $ids ) && ! is_string ( $ids ))
 			return false;
@@ -72,6 +78,11 @@ class phpfun {
 		}
 		return true;
 	}
+	/**
+	 * 字符串的长度
+	 * @param string $str
+	 * @return number	1个汉字长度为2
+	 */
 	static function str_len($str) {
 		$length = strlen ( preg_replace ( '/[\x00-\x7F]/', '', $str ) );
 		
