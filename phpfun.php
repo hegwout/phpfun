@@ -131,4 +131,82 @@ class phpfun {
 		
 		return $result;
 	}
+	
+	static public function dump_table($var)
+	{		 
+		if( is_array($var) )
+		{
+			echo "<table width=\"100%\" border=\"1\">\n";
+			$depth = self::array_depth($var)  ;
+			if( $depth == 1 )
+			{
+				echo "	<tr>\n";
+				foreach ($var as $k => $v)
+				{
+					echo "	<th>$k</th>";
+				}
+				echo "	</tr>\n";
+			}
+			else 
+			{
+				$keys = $var[0];
+				echo "	<tr>\n";
+				foreach ($keys as $k => $v)
+				{
+					echo "	<th>$k</th>";
+				}
+				echo "	</tr>\n";
+			}
+			
+			if( self::array_depth($var) == 1)
+			{
+				echo "	<tr>\n";
+				foreach ($var as $k => $v)
+				{ 
+					echo "	<td>$v</td>";
+				}
+				echo "	</tr>\n";
+			}
+			else 
+			{
+				foreach ($var as $k => $v)
+				{
+					echo "	<tr>\n";
+					if( is_array($v) )
+					{
+						foreach ($v as $vk => $vv)
+						{
+							echo "	<td>$vv</td>";
+						}
+					}
+					else{
+						echo "	<td>$v</td>";
+					}
+					echo "</tr>\n";
+				}
+			}
+			
+			echo "</table>\n";
+		}
+	}
+	
+	 
+	static function array_depth($array) 
+	{
+		$max_depth = 1;
+		if( is_array($array) )
+		{
+			foreach ($array as $value) {
+				if (is_array($value)) {
+					$depth = self::array_depth($value) + 1;
+		
+					if ($depth > $max_depth) {
+						$max_depth = $depth;
+					}
+				}
+			}
+		}
+		
+		return $max_depth;
+	}
 }
